@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おてつだいチャレンジ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Interフォントを読み込む */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* 背景にグラデーションを追加 - 元の紫系に戻す */
+            background: linear-gradient(to right bottom, #c4b5fd, #a78bfa); /* 柔らかい紫系のグラデーション */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* 画面全体を使う */
+            margin: 0;
+            padding: 20px; /* 全体のパディング */
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff; /* 白いカード背景 */
+            border-radius: 1.5rem; /* 角を丸く */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* 影を強調 */
+            /* 広い画面幅で40%の幅に設定し、最大幅も調整 */
+            width: 100%;
+            max-width: 600px; /* スマートフォンなど小さい画面での最大幅 */
+            @media (min-width: 768px) { /* md (768px)以上の画面幅 */
+                width: 40%; /* 画面幅の40%に修正 */
+                max-width: 600px; /* md以上の画面での最大幅を修正 */
+            }
+            padding: 2.5rem; /* 内部パディング */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* 要素間のスペース */
+            transform: translateY(-20px); /* 少し上に配置して中央感を出す */
+        }
+        .yen-display {
+            font-size: 1.5rem; /* 報酬表示のフォントサイズ */
+            font-weight: 700; /* 太字 */
+            color: #6d28d9; /* 紫色で目立たせる */
+            margin-bottom: 1rem;
+            background-color: #ede9fe; /* 薄い紫色の背景 */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(109, 40, 217, 0.2); /* 紫系の影 */
+            display: inline-block; /* 中央寄せのため */
+        }
+        .question-box {
+            min-height: 120px; /* 質問表示エリアの最小高さを少し増やす */
+            display: flex;
+            flex-direction: column; /* 縦に並べる */
+            align-items: center; /* 中央揃え */
+            justify-content: center; /* 中央揃え */
+            color: #333; /* 濃いめのテキスト色 */
+            background-color: #e2e8f0; /* 薄いグレーの背景 */
+            border-radius: 1rem; /* 角をさらに丸く */
+            padding: 2rem; /* パディングを増やす */
+            text-align: center;
+            border: 1px solid #cbd5e1; /* 軽いボーダーを追加 */
+        }
+        .main-question-text {
+            font-size: 1.75rem; /* メイン質問のフォントサイズをさらに大きく */
+            font-weight: 700; /* 太字 */
+            margin-bottom: 0.75rem; /* 補足との間隔を増やす */
+            color: #1a202c; /* より濃いテキスト色 */
+            line-height: 1.3; /* 行の高さを調整 */
+        }
+        .supplement-text {
+            font-size: 1.1rem; /* 補足説明のフォントサイズを少し大きく */
+            font-weight: 400; /* 通常の太さ */
+            color: #4a5568; /* やや薄いテキスト色 */
+            line-height: 1.5; /* 行の高さを調整 */
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* ボタン間のスペース */
+            flex-wrap: wrap; /* 小さい画面で折り返す */
+        }
+        .button-primary {
+            background-color: #6d28d9; /* より濃い紫色のボタン */
+            color: white;
+            padding: 1rem 2.5rem; /* パディングを増やす */
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4); /* 紫系の影 */
+            cursor: pointer;
+            border: none;
+            outline: none;
+            letter-spacing: 0.05em; /* 文字間隔を調整 */
+            flex-grow: 1; /* ボタンが伸びるように */
+            max-width: 200px; /* ボタンの最大幅 */
+        }
+        .button-primary:hover {
+            background-color: #5b21b6; /* ホバーでさらに濃い紫 */
+            transform: translateY(-3px); /* 少し浮き上がる */
+            box-shadow: 0 8px 20px rgba(109, 40, 217, 0.5); /* ホバー時の影を強調 */
+        }
+        .button-secondary {
+            /* 戻るボタンのデザインを調整 */
+            background-color: #ede9fe; /* 非常に薄い紫色の背景 */
+            color: #6d28d9; /* メインボタンと同じ濃い紫色のテキスト */
+            border: 1px solid #a78bfa; /* 背景グラデーションの色に合わせたボーダー */
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.2); /* 紫系の影を調整 */
+            cursor: pointer;
+            outline: none;
+            letter-spacing: 0.05em; /* 文字間隔を調整 */
+            flex-grow: 1; /* ボタンが伸びるように */
+            max-width: 200px; /* ボタンの最大幅 */
+        }
+        .button-secondary:hover {
+            background-color: #ddd6fe; /* ホバーで少し濃い紫 */
+            transform: translateY(-3px); /* 少し浮き上がる */
+            box-shadow: 0 6px 15px rgba(167, 139, 250, 0.3); /* ホバー時の影を強調 */
+            border-color: #6d28d9; /* ホバーでボーダーの色を濃く */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">おてつだいチャレンジ</h1>
+
+        <div id="yen-display" class="yen-display">
+            現在の報酬: <span id="total-yen">0</span>円
+        </div>
+
+        <div id="question-display" class="question-box">
+            <div id="main-question" class="main-question-text"></div>
+            <div id="supplement-text" class="supplement-text"></div>
+        </div>
+
+        <div class="button-group">
+            <button id="prev-button" class="button-secondary hidden">戻る</button>
+            <button id="yes-button" class="button-primary hidden">はい</button>
+            <button id="no-button" class="button-secondary hidden">いいえ</button>
+            <button id="start-button" class="button-primary">開始</button>
+            <button id="start-over-button" class="button-secondary hidden">最初から</button>
+        </div>
+    </div>
+
+    <script>
+        // お手伝いの質問リスト
+        // 各お手伝いはメインの質問、補足説明、そして完了時の報酬額を持っています。
+        const chores = [
+            {
+                main: "お米の予約はしてくれた？",
+                supplement: "今日の夕食分のお米だよ",
+                reward: 10
+            },
+            {
+                main: "お風呂は洗ってくれた？",
+                supplement: "お風呂場をピカピカにしてね",
+                reward: 10
+            },
+            {
+                main: "洗濯物を取り入れてくれた？",
+                supplement: "乾いた洗濯物をたたんでしまおう",
+                reward: 10
+            },
+            {
+                main: "犬の散歩に行ってくれた？",
+                supplement: "忘れずにうんちも拾ってきてね",
+                reward: 10
+            },
+            // ここに新しいお手伝いの質問を追加できます
+            /*
+            {
+                main: "新しいお手伝いの質問",
+                supplement: "補足説明があればここに書く",
+                reward: 10 // このお手伝いを完了した時の報酬額
+            },
+            */
+        ];
+
+        let currentChoreIndex = -1; // -1は初期画面、0からお手伝い開始
+        let totalYen = 0; // 合計報酬額
+        let isFeedbackDisplaying = false; // フィードバックメッセージ表示中かどうかのフラグ
+
+        const mainQuestionEl = document.getElementById('main-question');
+        const supplementTextEl = document.getElementById('supplement-text');
+        const totalYenEl = document.getElementById('total-yen');
+        const startButton = document.getElementById('start-button');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const prevButton = document.getElementById('prev-button');
+        const startOverButton = document.getElementById('start-over-button');
+
+        // 画面表示を更新する関数
+        function updateDisplay() {
+            totalYenEl.textContent = totalYen; // 報酬額を更新
+
+            if (isFeedbackDisplaying) { // フィードバックメッセージ表示中
+                mainQuestionEl.textContent = "ありがとう！助かる〜";
+                supplementTextEl.textContent = "";
+                startButton.classList.add('hidden');
+                yesButton.classList.add('hidden');
+                noButton.classList.add('hidden');
+                prevButton.classList.add('hidden');
+                startOverButton.classList.add('hidden');
+            } else if (currentChoreIndex === -1) { // 初期画面
+                mainQuestionEl.textContent = "おてつだいチャレンジを開始します。";
+                supplementTextEl.textContent = "「開始」ボタンをクリックしてください。";
+                startButton.classList.remove('hidden');
+                yesButton.classList.add('hidden');
+                noButton.classList.add('hidden');
+                prevButton.classList.add('hidden');
+                startOverButton.classList.add('hidden');
+            } else if (currentChoreIndex < chores.length) { // お手伝いの質問中
+                const chore = chores[currentChoreIndex];
+                mainQuestionEl.textContent = chore.main;
+                supplementTextEl.innerHTML = (chore.supplement || '').replace(/\n/g, '<br>'); // 改行対応
+
+                startButton.classList.add('hidden');
+                yesButton.classList.remove('hidden');
+                noButton.classList.remove('hidden');
+                startOverButton.classList.add('hidden');
+
+                if (currentChoreIndex > 0) { // 最初の質問以外は戻るボタンを表示
+                    prevButton.classList.remove('hidden');
+                } else {
+                    prevButton.classList.add('hidden');
+                }
+            } else { // すべてのお手伝いが完了
+                mainQuestionEl.textContent = "すべてのお手伝いが完了しました！";
+                supplementTextEl.textContent = `合計で${totalYen}円の報酬をゲットしました！`;
+                startButton.classList.add('hidden');
+                yesButton.classList.add('hidden');
+                noButton.classList.add('hidden');
+                prevButton.classList.add('hidden');
+                startOverButton.classList.remove('hidden');
+            }
+        }
+
+        // 「はい」ボタンがクリックされた時の処理
+        function handleYes() {
+            if (currentChoreIndex < chores.length) {
+                totalYen += chores[currentChoreIndex].reward; // 報酬を加算
+                isFeedbackDisplaying = true; // フィードバック表示フラグを立てる
+                updateDisplay(); // フィードバックメッセージを表示
+
+                setTimeout(() => {
+                    isFeedbackDisplaying = false; // フラグを戻す
+                    currentChoreIndex++; // 次のお手伝いへ
+                    updateDisplay(); // 次のお手伝いを表示
+                }, 2000); // 2秒後に次へ進む
+            }
+        }
+
+        // 「いいえ」ボタンがクリックされた時の処理
+        function handleNo() {
+            if (currentChoreIndex < chores.length) {
+                // 報酬は加算しない
+                currentChoreIndex++; // 次のお手伝いへ
+                updateDisplay();
+            }
+        }
+
+        // 「戻る」ボタンがクリックされた時の処理
+        function handlePrev() {
+            if (currentChoreIndex > 0) {
+                currentChoreIndex--;
+                // 戻る際に報酬は減算しない（一度ゲットした報酬は取り消さない）
+                updateDisplay();
+            } else if (currentChoreIndex === 0) { // 最初の質問から戻る場合は初期画面へ
+                currentChoreIndex = -1;
+                updateDisplay();
+            }
+        }
+
+        // 「開始」または「最初から」ボタンがクリックされた時の処理
+        function handleStartOrStartOver() {
+            currentChoreIndex = 0; // 最初のお手伝いから開始
+            totalYen = 0; // 報酬をリセット
+            isFeedbackDisplaying = false; // フィードバックフラグもリセット
+            updateDisplay();
+        }
+
+        // イベントリスナーの設定
+        startButton.addEventListener('click', handleStartOrStartOver);
+        yesButton.addEventListener('click', handleYes);
+        noButton.addEventListener('click', handleNo);
+        prevButton.addEventListener('click', handlePrev);
+        startOverButton.addEventListener('click', handleStartOrStartOver);
+
+        // 初期表示
+        updateDisplay();
+    </script>
+</body>
+</html>
