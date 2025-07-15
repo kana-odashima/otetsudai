@@ -167,7 +167,8 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">おてつだいチャレンジ</h1>
+        <!-- タイトルのフォントサイズをレスポンシブに調整 -->
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">おてつだいチャレンジ</h1>
 
         <div id="yen-display" class="yen-display">
             現在の報酬: <span id="total-yen">0</span>円
@@ -183,7 +184,7 @@
 
         <div class="button-group">
             <button id="prev-button" class="button-secondary hidden">戻る</button>
-            <!-- 「いいえ」ボタンを「はい」ボタンの前に配置 -->
+            <!-- 「いいえ」ボタンを元に戻す -->
             <button id="no-button" class="button-secondary hidden">いいえ</button>
             <button id="yes-button" class="button-primary hidden">はい</button>
             <button id="start-button" class="button-primary">開始</button>
@@ -236,7 +237,7 @@
         const totalYenEl = document.getElementById('total-yen');
         const startButton = document.getElementById('start-button');
         const yesButton = document.getElementById('yes-button');
-        const noButton = document.getElementById('no-button');
+        const noButton = document.getElementById('no-button'); // いいえボタンの参照を復元
         const prevButton = document.getElementById('prev-button');
         const startOverButton = document.getElementById('start-over-button');
         const lineShareButton = document.getElementById('line-share-button');
@@ -251,7 +252,7 @@
                 supplementTextEl.textContent = "";
                 startButton.classList.add('hidden');
                 yesButton.classList.add('hidden');
-                noButton.classList.add('hidden');
+                noButton.classList.add('hidden'); // いいえボタンの表示制御を復元
                 prevButton.classList.add('hidden');
                 startOverButton.classList.add('hidden');
                 lineShareButton.classList.add('hidden');
@@ -261,7 +262,7 @@
                 supplementTextEl.textContent = "「開始」ボタンをクリックしてください。";
                 startButton.classList.remove('hidden');
                 yesButton.classList.add('hidden');
-                noButton.classList.add('hidden');
+                noButton.classList.add('hidden'); // いいえボタンの表示制御を復元
                 prevButton.classList.add('hidden');
                 startOverButton.classList.add('hidden');
                 lineShareButton.classList.add('hidden');
@@ -273,7 +274,7 @@
 
                 startButton.classList.add('hidden');
                 yesButton.classList.remove('hidden');
-                noButton.classList.remove('hidden');
+                noButton.classList.remove('hidden'); // いいえボタンの表示制御を復元
                 startOverButton.classList.add('hidden');
                 lineShareButton.classList.add('hidden');
                 lineCommentArea.classList.add('hidden'); // 質問中はコメント欄は非表示
@@ -288,7 +289,7 @@
                 supplementTextEl.textContent = `合計で${totalYen}円の報酬をゲットしました！`;
                 startButton.classList.add('hidden');
                 yesButton.classList.add('hidden');
-                noButton.classList.add('hidden');
+                noButton.classList.add('hidden'); // いいえボタンの表示制御を復元
                 prevButton.classList.add('hidden');
                 startOverButton.classList.remove('hidden');
                 lineShareButton.classList.remove('hidden'); // 完了時にLINEシェアボタンを表示
@@ -358,7 +359,7 @@
         // イベントリスナーの設定
         startButton.addEventListener('click', handleStartOrStartOver);
         yesButton.addEventListener('click', handleYes);
-        noButton.addEventListener('click', handleNo);
+        noButton.addEventListener('click', handleNo); // いいえボタンのイベントリスナーを復元
         prevButton.addEventListener('click', handlePrev);
         startOverButton.addEventListener('click', handleStartOrStartOver);
         lineShareButton.addEventListener('click', handleLineShare);
